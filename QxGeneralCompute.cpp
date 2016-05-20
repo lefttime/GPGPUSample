@@ -45,7 +45,7 @@ typedef struct {
   char* shader_source;
 } TextureParameters;
 
-static bool glewInitialized;
+static bool glewInitialized = false;
 
 class QxGeneralCompute::QxGeneralComputePrivate
 {
