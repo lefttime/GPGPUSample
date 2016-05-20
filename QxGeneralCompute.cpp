@@ -220,6 +220,10 @@ QxGeneralCompute::~QxGeneralCompute()
 
 qint64 QxGeneralCompute::compute() const
 {
+  if( !glewInitialized ) {
+	return -1;
+  }
+	
   QElapsedTimer timer;
   timer.start();
 
