@@ -62,8 +62,8 @@ public:
 
     if( glewInitialized ) {
       m_textureParameters.texTarget         = GL_TEXTURE_RECTANGLE;
-      m_textureParameters.texInternalFormat = GL_RGBA32F;
-      m_textureParameters.texFormat         = GL_RGBA;
+      m_textureParameters.texInternalFormat = GL_R32F;
+      m_textureParameters.texFormat         = GL_RED;
     }
   }
 
@@ -234,7 +234,7 @@ qint64 QxGeneralCompute::compute() const
 
   GLuint unWidth = 1024;
   GLuint unHeight= 1024;
-  GLuint unNoData = 4 * unWidth * unHeight;
+  GLuint unNoData = unWidth * unHeight;
 
   float* pfInput = new float[unNoData];
   float* pfOutput = new float[unNoData];
