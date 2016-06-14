@@ -67,7 +67,7 @@ public:
     }
   }
 
-  void initGLSL() {
+  void prepareGLSL() {
     GLint status;
 
     m_glslProgram = glCreateProgram();
@@ -93,6 +93,12 @@ public:
     glLinkProgram( m_glslProgram );
 
     m_radiusParam = glGetUniformLocation( m_glslProgram, "fRadius" );
+  }
+
+  void releaseGLSL() {
+    glDetachShader( m_glslProgram, m_fragmentShader );
+    glDeleteShader( m_fragmentShader );
+    glDeleteProgram( m_glslProgram );
   }
 
   void initFBO() {
@@ -142,7 +148,7 @@ public:
 
   void performComputation( char* shader_source ) {
     m_textureParameters.shader_source = shader_source;
-    initGLSL();
+    prepareGLSL();
 
     glFramebufferTexture2D( GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, m_textureParameters.texTarget, m_yTexID, 0 );
 
@@ -167,6 +173,8 @@ public:
     glEnd();
 
     glFinish();
+
+    releaseGLSL();
   }
 
   void prepare( GLuint width, GLuint height, float* pfInput, float* pfOutput ) {
@@ -180,9 +188,6 @@ public:
   }
 
   void release() {
-    glDetachShader( m_glslProgram, m_fragmentShader );
-    glDeleteShader( m_fragmentShader );
-    glDeleteProgram( m_glslProgram );
     glDeleteFramebuffers( 1, &m_fb );
     glDeleteTextures( 1, &m_yTexID );
     glDeleteTextures( 1, &m_xTexID );
