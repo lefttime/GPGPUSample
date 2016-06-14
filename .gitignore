@@ -1,0 +1,58 @@
+# C++ objects and libs
+
+*.slo
+*.lo
+*.o
+*.a
+*.la
+*.lai
+*.lib
+*.so
+*.dll
+*.dylib
+*.log
+*.xml
+*.swo
+*.swp
+html
+bin
+projects
+log
+build*
+*log*
+
+# Qt-es
+ui_*
+*.pro.user
+*.pro.user.*
+moc_*.cpp
+qrc_*.cpp
+Makefile*
+*-build-*
+debug
+release
+
+# VS
+ipch
+moc
+ui
+build
+Win32*
+*.sdf
+*.sln
+*.suo
+*.vc*
+*.pdb
+*.user
+*.opensdf
+PROJECT_ASSISTANT
+
+# MAC OS
+*.app
+.DS_Store
+
+# Except
+!src/client/lib/*.lib
+!src/client/lib/*.dll
+!src/client/lib64/*.lib
+!src/client/lib64/*.dll
