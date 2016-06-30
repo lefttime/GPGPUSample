@@ -34,6 +34,7 @@ char convolution[] = {
   "    }"
   "  }"
   "  vec4Result = fSum / fTotal;"
+  "  vec4Result = vec4(vec4Result.r);"
   "  gl_FragColor = vec4Result;"
   "}"
 };
@@ -125,9 +126,20 @@ public:
     glTexImage2D( m_textureParameters.texTarget, 0, m_textureParameters.texInternalFormat, m_width, m_height, 0, m_textureParameters.texFormat, GL_FLOAT, 0 );
   }
 
+  void setupTargetTexture( const GLuint texID ) {
+    glBindTexture(   m_textureParameters.texTarget, texID );
+    glTexParameteri( m_textureParameters.texTarget, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
+    glTexParameteri( m_textureParameters.texTarget, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
+    glTexParameteri( m_textureParameters.texTarget, GL_TEXTURE_WRAP_S, GL_CLAMP );
+    glTexParameteri( m_textureParameters.texTarget, GL_TEXTURE_WRAP_T, GL_CLAMP );
+
+    glTexImage2D( m_textureParameters.texTarget, 0, GL_RGBA32F, m_width, m_height, 0, GL_RGBA, GL_FLOAT, 0 );
+  }
+
   void transferFromTextrue( float* data ) {
     glReadBuffer( GL_COLOR_ATTACHMENT0 );
-    glReadPixels( 0, 0, m_width, m_height, m_textureParameters.texFormat, GL_FLOAT, data );
+    //glReadPixels( 0, 0, m_width, m_height, m_textureParameters.texFormat, GL_FLOAT, data );
+    glReadPixels( 0, 0, m_width, m_height, GL_RGBA, GL_FLOAT, data );
   }
 
   void transferToTexture( float* data, GLuint texID ) {
@@ -139,7 +151,8 @@ public:
     glGenTextures( 1, &m_yTexID );
     glGenTextures( 1, &m_xTexID );
 
-    setupTexture( m_yTexID );
+    //setupTexture( m_yTexID );
+    setupTargetTexture( m_yTexID );
     setupTexture( m_xTexID );
     transferToTexture( m_pfInput, m_xTexID );
 
@@ -237,7 +250,7 @@ qint64 QxGeneralCompute::compute() const
   GLuint unNoData = unWidth * unHeight;
 
   float* pfInput = new float[unNoData];
-  float* pfOutput = new float[unNoData];
+  float* pfOutput = new float[4*unNoData];
   for( unsigned idx = 0; idx < unNoData; ++idx ) {
     pfInput[idx] = idx;
   }

@@ -14,7 +14,10 @@ public:
 
 private Q_SLOTS:
 
-  void on_gpuBtn_clicked();
+  void on_loadBtn_clicked();
+  void on_extractCount_valueChanged( int );
+  void on_slices_valueChanged( int );
+  void on_filename_textChanged( const QString& );
 
 private:
 
